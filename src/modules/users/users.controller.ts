@@ -4,6 +4,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -31,5 +32,11 @@ export class UsersController {
   @Get('/test')
   async test(@GetUserId() id: string) {
     return { test: 'OK' };
+  }
+
+  @Get(':id/borrowed-books')
+  // @UseGuards(AuthGuard())
+  async borrowedBooks(@Param('id') id: string) {
+    return this.service.borrowedBooks(id);
   }
 }

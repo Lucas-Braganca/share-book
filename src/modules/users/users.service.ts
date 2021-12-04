@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   Logger,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -11,6 +12,7 @@ import { Repository } from 'typeorm';
 import { passwordSalt, tokenExpiration } from '../common/constants';
 import { SigninRequestDto } from './dto/request/signin-request.dto';
 import { SignupRequestDto } from './dto/request/signup-request.dto';
+import { BorrowedBooksCount } from './dto/response/borrowed-books-count-response.dto';
 import { JwtPayload } from './dto/response/jwt-payload.interface';
 import { JwtResponse } from './dto/response/jwt-response.interface';
 import { User } from './users.entity';
@@ -48,6 +50,20 @@ export class UsersService {
     }
 
     return this.createJwtPayload(user);
+  }
+
+  async borrowedBooks(id: string): Promise<BorrowedBooksCount> {
+    const user = await this.usersRepository.findOne({
+      relations: ['userBooks'],
+      where: { id },
+    });
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+    const count = user.userBooks.filter(b => b.isBorrowed === true).length;
+    return {
+      count,
+    };
   }
 
   private async createJwtPayload(user: User): Promise<JwtResponse> {
