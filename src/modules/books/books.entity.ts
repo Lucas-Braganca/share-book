@@ -17,7 +17,7 @@ export class Book extends BaseModel {
   @IsNotEmpty()
   genre: string;
 
-  @Column({ default: false })
+  @Column({ name: 'is_borrowed', default: false })
   isBorrowed: boolean;
 
   @ManyToOne(

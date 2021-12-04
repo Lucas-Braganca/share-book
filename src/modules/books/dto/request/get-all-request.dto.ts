@@ -8,4 +8,7 @@ export class GetAllRequestDto {
 
   @IsOptional()
   search?: string;
+
+  @IsOptional()
+  onlyAvailable = false;
 }

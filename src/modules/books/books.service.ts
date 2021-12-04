@@ -32,6 +32,10 @@ export class BooksService {
   async get(filters: GetAllRequestDto): Promise<GetAllResponseDto> {
     const query = this.bookRepository.createQueryBuilder('books');
 
+    if (filters.onlyAvailable) {
+      query.where(`books.is_borrowed = true`);
+    }
+
     if (filters.search) {
       query.where(
         new Brackets(qb =>
