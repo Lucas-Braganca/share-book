@@ -9,10 +9,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { passwordSalt, tokenExpiration } from '../common/constants';
+import { SigninRequestDto } from './dto/request/signin-request.dto';
+import { SignupRequestDto } from './dto/request/signup-request.dto';
 import { JwtPayload } from './dto/response/jwt-payload.interface';
 import { JwtResponse } from './dto/response/jwt-response.interface';
-import { SigninRequestDto } from './dto/signin-request.dto';
-import { SignupRequestDto } from './dto/signup-request.dto';
 import { User } from './users.entity';
 
 @Injectable()
@@ -50,15 +50,6 @@ export class UsersService {
     return this.createJwtPayload(user);
   }
 
-  private async validateUser(request: SigninRequestDto): Promise<User> {
-    const { email, password } = request;
-    const user = await this.usersRepository.findOne({ email });
-    if (user && (await this.validatePassword(user.password, password))) {
-      return user;
-    }
-    return null;
-  }
-
   private async createJwtPayload(user: User): Promise<JwtResponse> {
     const payload: JwtPayload = { userName: user.name, userId: user.id };
     const accessToken = this.jwtService.sign(payload);
@@ -69,6 +60,15 @@ export class UsersService {
     };
   }
 
+  private async validateUser(request: SigninRequestDto): Promise<User> {
+    const { email, password } = request;
+    const user = await this.usersRepository.findOne({ email });
+    if (user && (await this.validatePassword(user.password, password))) {
+      return user;
+    }
+    return null;
+  }
+
   private async validatePassword(userPassword: string, password: string) {
     return bcrypt.compare(password, userPassword);
   }
@@ -76,7 +76,7 @@ export class UsersService {
   private async validateEmail(email: string) {
     const userByEmail = await this.usersRepository.findOne({ email });
     if (userByEmail) {
-      throw new BadRequestException('User com email já existe');
+      throw new BadRequestException('User with this email already exists');
     }
   }
 }

@@ -8,9 +8,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { SigninRequestDto } from './dto/signin-request.dto';
-import { SignupRequestDto } from './dto/signup-request.dto';
-import { GetUserId } from './get-user-id.decorator';
+import { GetUserId } from './authguard/decorators/get-user-id.decorator';
+import { SigninRequestDto } from './dto/request/signin-request.dto';
+import { SignupRequestDto } from './dto/request/signup-request.dto';
 import { User } from './users.entity';
 import { UsersService } from './users.service';
 @Controller('users')
