@@ -1,9 +1,16 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Brackets, Repository } from 'typeorm';
 import { Book } from './books.entity';
 import { CreateBookRequestDto } from './dto/request/create-book-request.dto';
+import { GetAllRequestDto } from './dto/request/get-all-request.dto';
 import { UpdateBookRequestDto } from './dto/request/update-book.request.dto';
+import { GetAllResponseDto } from './dto/response/get-all-response.dto';
 
 @Injectable()
 export class BooksService {
@@ -22,8 +29,30 @@ export class BooksService {
     return this.bookRepository.save(newBook);
   }
 
-  async get(): Promise<Book[]> {
-    return this.bookRepository.find();
+  async get(filters: GetAllRequestDto): Promise<GetAllResponseDto> {
+    const query = this.bookRepository.createQueryBuilder('books');
+
+    if (filters.search) {
+      query.where(
+        new Brackets(qb =>
+          qb
+            .where(`books.name ILIKE '%${filters.search}%'`)
+            .orWhere(`books.author ILIKE '%${filters.search}%'`)
+            .orWhere(`books.genre ILIKE '%${filters.search}%'`),
+        ),
+      );
+    }
+
+    const [data, count] = await Promise.all([
+      query
+        .clone()
+        .limit(filters.take)
+        .offset(filters.skip)
+        .getMany(),
+      query.clone().getCount(),
+    ]);
+
+    return { books: data, count };
   }
 
   async getById(id: string): Promise<Book> {
@@ -46,5 +75,22 @@ export class BooksService {
     book.genre = genre ?? book.genre;
 
     return this.bookRepository.save(book);
+  }
+
+  async delete(id: string) {
+    try {
+      const bookToDelete = await this.bookRepository.findOne({ id });
+      if (!bookToDelete) {
+        throw new NotFoundException();
+      }
+      await this.bookRepository.delete({ id });
+      return { deleted: true };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(`Book with id ${id} not found`);
+      }
+      this.logger.error(`Error on book delete. Id: ${id}`);
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }

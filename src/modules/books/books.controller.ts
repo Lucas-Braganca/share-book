@@ -1,16 +1,19 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUserId } from '../users/authguard/decorators/get-user-id.decorator';
 import { BooksService } from './books.service';
 import { CreateBookRequestDto } from './dto/request/create-book-request.dto';
+import { GetAllRequestDto } from './dto/request/get-all-request.dto';
 import { UpdateBookRequestDto } from './dto/request/update-book.request.dto';
 
 @Controller('books')
@@ -27,8 +30,8 @@ export class BooksController {
   }
 
   @Get()
-  async get() {
-    return this.service.get();
+  async get(@Query() filters: GetAllRequestDto) {
+    return this.service.get(filters);
   }
 
   @Get('/:id')
@@ -40,5 +43,11 @@ export class BooksController {
   @UseGuards(AuthGuard())
   async update(@Param('id') id: string, @Body() request: UpdateBookRequestDto) {
     return this.service.update(id, request);
+  }
+
+  @Delete('/:id')
+  @UseGuards(AuthGuard())
+  async delete(@Param('id') id: string) {
+    return this.service.delete(id);
   }
 }
