@@ -73,7 +73,7 @@ export class LoansService {
     userId: string,
     id: string,
     request: UpdateRequestStatusRequestDto,
-  ) {
+  ): Promise<Loan> {
     const loan = await this.loanRepository.findOne(id);
     if (!loan) {
       throw new NotFoundException(`Loan with id ${id} not found`);
@@ -96,6 +96,23 @@ export class LoansService {
     return this.loanRepository.save(loan);
   }
 
+  async returnBook(userId: string, id: string): Promise<Loan> {
+    const loan = await this.loanRepository.findOne(id);
+    if (!loan) {
+      throw new NotFoundException(`Loan with id ${id} not found`);
+    }
+
+    if (loan.BorrowedUserId !== userId) {
+      throw new UnauthorizedException(`Different ids for user. Id ${userId}`);
+    }
+
+    if (loan.status !== LoanStatus.BORROWED) {
+      throw new BadRequestException(`Only borrowed loans can be updated`);
+    }
+
+    loan.status = LoanStatus.DELIVERED;
+    return this.loanRepository.save(loan);
+  }
   private async getLoanFilters(
     query: SelectQueryBuilder<Loan>,
     filters: GetLoansRequestDto,

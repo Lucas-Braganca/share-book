@@ -48,4 +48,9 @@ export class LoansController {
   ) {
     return this.service.updateRequestStatus(userId, loanId, request);
   }
+
+  @Patch('/:id/return-book')
+  async returnBook(@GetUserId() userId: string, @Param('id') loanId: string) {
+    return this.service.returnBook(userId, loanId);
+  }
 }
