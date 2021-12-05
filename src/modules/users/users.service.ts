@@ -52,6 +52,15 @@ export class UsersService {
     return this.createJwtPayload(user);
   }
 
+  async getById(id: string) {
+    try {
+      const user = await this.usersRepository.findOneOrFail({ id });
+      return user;
+    } catch (error) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+  }
+
   async borrowedBooks(id: string): Promise<BorrowedBooksCount> {
     const user = await this.usersRepository.findOne({
       relations: ['userBooks'],

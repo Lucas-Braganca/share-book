@@ -34,6 +34,11 @@ export class UsersController {
     return { test: 'OK' };
   }
 
+  @Get(':id')
+  @UseGuards(AuthGuard())
+  async getById(@Param('id') id: string) {
+    return this.service.getById(id);
+  }
   @Get(':id/borrowed-books')
   // @UseGuards(AuthGuard())
   async borrowedBooks(@Param('id') id: string) {
