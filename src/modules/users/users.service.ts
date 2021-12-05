@@ -78,20 +78,22 @@ export class UsersService {
     id: string,
     paramUserId: string,
   ): Promise<User> {
-    if (paramUserId !== id) {
-      throw new UnauthorizedException('Different users');
+    try {
+      const user = await this.validateParamAndUser(id, paramUserId);
+
+      user.name = request.name ?? user.name;
+      user.email = request.email ?? user.email;
+
+      return this.usersRepository.save(user);
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException(error.message);
+      }
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw new InternalServerErrorException(error.message);
     }
-
-    const user = await this.usersRepository.findOne({ id });
-    if (!user) {
-      this.logger.error(`User with id ${id} not found`);
-      throw new NotFoundException(`User with id ${id} not found`);
-    }
-
-    user.name = request.name ?? user.name;
-    user.email = request.email ?? user.email;
-
-    return this.usersRepository.save(user);
   }
 
   async updatePassword(
