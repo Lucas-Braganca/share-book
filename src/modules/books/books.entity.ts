@@ -1,6 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { BaseModel } from '../common/base-model.entity';
+import { Loan } from '../loans/loans.entity';
 import { User } from '../users/users.entity';
 
 @Entity('books')
@@ -26,4 +27,10 @@ export class Book extends BaseModel {
   )
   @JoinColumn({ name: 'user_id' })
   user: User;
+
+  @OneToMany(
+    () => Loan,
+    loan => loan.book,
+  )
+  bookLoans?: Loan[];
 }
