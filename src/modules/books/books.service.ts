@@ -29,8 +29,15 @@ export class BooksService {
     return this.bookRepository.save(newBook);
   }
 
-  async get(filters: GetAllRequestDto): Promise<GetAllResponseDto> {
+  async get(
+    filters: GetAllRequestDto,
+    userId?: string,
+  ): Promise<GetAllResponseDto> {
     const query = this.bookRepository.createQueryBuilder('books');
+
+    if (userId) {
+      query.where('books.user_id = :userId', { userId });
+    }
 
     if (filters.onlyAvailable) {
       query.where(`books.is_borrowed = true`);
@@ -59,9 +66,16 @@ export class BooksService {
     return { books: data, count };
   }
 
+  async getMyBooks(userId: string, filter: GetAllRequestDto) {
+    return this.get(filter, userId);
+  }
+
   async getById(id: string): Promise<Book> {
     try {
-      const book = await this.bookRepository.findOneOrFail({ id });
+      const book = await this.bookRepository.findOneOrFail({
+        relations: ['user'],
+        where: { id },
+      });
       return book;
     } catch (error) {
       throw new NotFoundException(`Book with id ${id} not found`);

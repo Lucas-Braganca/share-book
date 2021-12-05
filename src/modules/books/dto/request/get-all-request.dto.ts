@@ -1,14 +1,6 @@
 import { IsOptional } from 'class-validator';
-export class GetAllRequestDto {
-  @IsOptional()
-  skip?: number = 0;
-
-  @IsOptional()
-  take?: number = 10;
-
-  @IsOptional()
-  search?: string;
-
+import { BaseFilter } from '../../../common/base-filter';
+export class GetAllRequestDto extends BaseFilter {
   @IsOptional()
   onlyAvailable = false;
 }

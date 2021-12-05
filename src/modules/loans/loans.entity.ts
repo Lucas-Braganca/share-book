@@ -1,3 +1,4 @@
+import { IsNotEmpty } from 'class-validator';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { Book } from '../books/books.entity';
 import { BaseModel } from '../common/base-model.entity';
@@ -6,9 +7,11 @@ import { LoanRequestStatus, LoanStatus } from '../common/types';
 @Entity('loans')
 export class Loan extends BaseModel {
   @Column({ name: 'owner_id' })
-  owner_id: string;
+  @IsNotEmpty()
+  ownerId: string;
 
   @Column({ name: 'borrowed_user_id' })
+  @IsNotEmpty()
   BorrowedUserId: string;
 
   @Column({

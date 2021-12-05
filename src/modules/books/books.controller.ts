@@ -50,4 +50,14 @@ export class BooksController {
   async delete(@Param('id') id: string) {
     return this.service.delete(id);
   }
+
+  @Get('/user/my-books')
+  @UseGuards(AuthGuard())
+  async getMyBooks(
+    @GetUserId() userId: string,
+    @Query() filter: GetAllRequestDto,
+  ) {
+    console.log('asd');
+    return this.service.getMyBooks(userId, filter);
+  }
 }

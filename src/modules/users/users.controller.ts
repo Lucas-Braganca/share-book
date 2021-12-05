@@ -28,7 +28,7 @@ export class UsersController {
     return this.service.signin(request);
   }
 
-  @UseGuards(AuthGuard())
+  // @UseGuards(AuthGuard())
   @Get('/test')
   async test(@GetUserId() id: string) {
     return { test: 'OK' };
@@ -39,6 +39,7 @@ export class UsersController {
   async getById(@Param('id') id: string) {
     return this.service.getById(id);
   }
+
   @Get(':id/borrowed-books')
   // @UseGuards(AuthGuard())
   async borrowedBooks(@Param('id') id: string) {
