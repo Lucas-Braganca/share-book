@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUserId } from '../users/authguard/decorators/get-user-id.decorator';
+import { GetUserId } from '../auth/authguard/decorators/get-user-id.decorator';
 import { BooksService } from './books.service';
 import { CreateBookRequestDto } from './dto/request/create-book-request.dto';
 import { GetAllRequestDto } from './dto/request/get-all-request.dto';

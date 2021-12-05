@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUserId } from '../users/authguard/decorators/get-user-id.decorator';
+import { GetUserId } from '../auth/authguard/decorators/get-user-id.decorator';
 import { GetLoansRequestDto } from './dto/request/get-loans-request.dto';
 import { LoansService } from './loans.service';
 
