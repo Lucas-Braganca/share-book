@@ -18,14 +18,6 @@ export class User extends BaseModel {
   @Column()
   email: string;
 
-  @IsNotEmpty()
-  @Column()
-  city: string;
-
-  @IsNotEmpty()
-  @Column()
-  state: string;
-
   @OneToMany(
     () => Book,
     book => book.user,
