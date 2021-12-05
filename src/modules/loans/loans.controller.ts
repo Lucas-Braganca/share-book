@@ -1,7 +1,17 @@
-import { Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUserId } from '../auth/authguard/decorators/get-user-id.decorator';
 import { GetLoansRequestDto } from './dto/request/get-loans-request.dto';
+import { UpdateRequestStatusRequestDto } from './dto/request/update-request-status-request.dto';
 import { LoansService } from './loans.service';
 
 @Controller('loans')
@@ -29,6 +39,13 @@ export class LoansController {
   ) {
     return this.service.getMyRequestedLoans(userId, filters);
   }
-}
 
-//no list pode filtrar pelo status da solicitação
+  @Patch('/:id/update-request-status')
+  async updateRequestStatus(
+    @GetUserId() userId: string,
+    @Param('id') loanId: string,
+    @Body() request: UpdateRequestStatusRequestDto,
+  ) {
+    return this.service.updateRequestStatus(userId, loanId, request);
+  }
+}

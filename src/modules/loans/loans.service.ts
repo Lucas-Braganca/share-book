@@ -4,11 +4,14 @@ import {
   InternalServerErrorException,
   Logger,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { BooksService } from '../books/books.service';
+import { LoanRequestStatus, LoanStatus } from '../common/types';
 import { GetLoansRequestDto } from './dto/request/get-loans-request.dto';
+import { UpdateRequestStatusRequestDto } from './dto/request/update-request-status-request.dto';
 import { GetLoansResponseDto } from './dto/response/get-loans-response.dto';
 import { Loan } from './loans.entity';
 
@@ -64,6 +67,33 @@ export class LoansService {
       .where('loan.borrowed_user_id = :userId', { userId });
 
     return this.getLoanFilters(query, filters);
+  }
+
+  async updateRequestStatus(
+    userId: string,
+    id: string,
+    request: UpdateRequestStatusRequestDto,
+  ) {
+    const loan = await this.loanRepository.findOne(id);
+    if (!loan) {
+      throw new NotFoundException(`Loan with id ${id} not found`);
+    }
+
+    if (loan.ownerId !== userId) {
+      throw new UnauthorizedException(`Different ids for user. Id ${userId}`);
+    }
+
+    if (loan.requestStatus !== LoanRequestStatus.PENDENT) {
+      throw new BadRequestException(`Only pendent loans can be updated`);
+    }
+
+    loan.requestStatus = request.requestStatus;
+    loan.status =
+      request.requestStatus === LoanRequestStatus.ACCEPTED
+        ? LoanStatus.BORROWED
+        : LoanStatus.NONE;
+
+    return this.loanRepository.save(loan);
   }
 
   private async getLoanFilters(
