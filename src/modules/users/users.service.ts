@@ -13,6 +13,7 @@ import { passwordSalt } from '../common/constants';
 import { UpdatePassWordRequestDto } from './dto/request/update-password-request.dto';
 import { UpdateUserRequestDto } from './dto/request/update-user-request.dto';
 import { BorrowedBooksCount } from './dto/response/borrowed-books-count-response.dto';
+import { GetAllUsersResponseDto } from './dto/response/get-all-users-response.dto';
 import { User } from './users.entity';
 
 @Injectable()
@@ -23,7 +24,7 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  async get(filters: BaseFilter) {
+  async get(filters: BaseFilter): Promise<GetAllUsersResponseDto> {
     const query = this.usersRepository.createQueryBuilder('users');
 
     if (filters.search) {

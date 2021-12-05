@@ -1,8 +1,8 @@
 {
   "name": "share-book",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Projeto de API para compartilhamento de livros, onde os usuários poderão emprestar e pegar emprestados livros de outras pessoas.",
+  "author": "Lucas de Sá Moreira Bragança",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
