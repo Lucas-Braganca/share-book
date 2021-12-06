@@ -18,7 +18,7 @@ const config: TypeOrmModuleOptions = {
     : 'password',
   database: process.env.TYPEORM_DATABASE
     ? process.env.TYPEORM_DATABASE
-    : 'customers',
+    : 'share_book',
   synchronize: process.env.TYPEORM_SYNCHRONIZE
     ? JSON.parse(process.env.TYPEORM_SYNCHRONIZE)
     : false,
