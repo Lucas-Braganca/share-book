@@ -14,8 +14,10 @@ async function bootstrap() {
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   await app.listen(PORT, HOST);
+  const apiUrl = await app.getUrl();
 
   const logger = new Logger('Main');
-  logger.verbose(`REST application running on: ${await app.getUrl()}`);
+  logger.verbose(`REST application running on: ${apiUrl}`);
+  logger.verbose(`Swagger running on: ${apiUrl}/api`);
 }
 bootstrap();
