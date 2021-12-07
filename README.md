@@ -83,5 +83,5 @@ Para o desenvolvimento desse projeto foram utilizadas as seguintes tecnologias:
 
 Lucas Bragança
 
-[![Linkedin Badge](https://img.shields.io/badge/-Lucas_Bragança-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/lucas-bragança-aa6050173)](www.linkedin.com/in/lucas-bragança-aa6050173)
+[![Linkedin Badge](https://img.shields.io/badge/-Lucas_Bragança-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/lucas-bragança-aa6050173)](https://www.linkedin.com/in/lucas-bragança-aa6050173)
 [![Gmail Badge](https://img.shields.io/badge/-lucas.eco11@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:lucas.eco11@gmail.com)](mailto:lucas.eco11@gmail.com)
