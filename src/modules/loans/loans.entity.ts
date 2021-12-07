@@ -49,6 +49,7 @@ export class Loan extends BaseModel {
   @ManyToOne(
     () => Book,
     user => user.bookLoans,
+    { cascade: true },
   )
   @JoinColumn({ name: 'book_id' })
   book: Book;

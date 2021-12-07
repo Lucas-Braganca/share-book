@@ -74,7 +74,10 @@ export class LoansService {
     id: string,
     request: UpdateRequestStatusRequestDto,
   ): Promise<Loan> {
-    const loan = await this.loanRepository.findOne(id);
+    const loan = await this.loanRepository.findOne({
+      relations: ['book'],
+      where: { id },
+    });
     if (!loan) {
       throw new NotFoundException(`Loan with id ${id} not found`);
     }
@@ -93,11 +96,19 @@ export class LoansService {
         ? LoanStatus.BORROWED
         : LoanStatus.NONE;
 
+    if (request.requestStatus === LoanRequestStatus.ACCEPTED) {
+      loan.book.isBorrowed = true;
+    }
+
     return this.loanRepository.save(loan);
   }
 
   async returnBook(userId: string, id: string): Promise<Loan> {
-    const loan = await this.loanRepository.findOne(id);
+    const loan = await this.loanRepository.findOne({
+      relations: ['book'],
+      where: { id },
+    });
+
     if (!loan) {
       throw new NotFoundException(`Loan with id ${id} not found`);
     }
@@ -111,6 +122,7 @@ export class LoansService {
     }
 
     loan.status = LoanStatus.DELIVERED;
+    loan.book.isBorrowed = false;
     return this.loanRepository.save(loan);
   }
   private async getLoanFilters(
