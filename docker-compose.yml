@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+
+  api:
+    container_name: nest_api
+    build: .
+    ports:
+      - ${PORT}:${PORT}
+    volumes:
+      - .:/home/api
+      - /home/api/node_modules
+    environment:
+      TYPEORM_HOST: database
+      TYPEORM_PORT: ${TYPEORM_PORT}
+
+  database:
+    container_name: nest_db
+    image: postgres:13
+    environment:
+      POSTGRES_DB: ${TYPEORM_DATABASE}
+      POSTGRES_USER: ${TYPEORM_USERNAME}
+      POSTGRES_PASSWORD: ${TYPEORM_PASSWORD}
+    ports:
+    - ${TYPEORM_PORT}:${TYPEORM_PORT}
