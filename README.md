@@ -81,8 +81,6 @@ Para o desenvolvimento desse projeto foram utilizadas as seguintes tecnologias:
 
 ## Autor
 
----
-
 Lucas Bragança
 
 [![Linkedin Badge](https://img.shields.io/badge/-Lucas_Bragança-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/lucas-bragança-aa6050173)](www.linkedin.com/in/lucas-bragança-aa6050173)
