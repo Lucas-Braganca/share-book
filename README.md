@@ -20,8 +20,6 @@ Os endpoints de listagem possuem paginação, com valor padrão de **skip** igua
 
 ## 🎲 Banco de dados
 
----
-
 Para o desenvolvimento do projeto foram criadas 3 tabelas em um banco PostgreSQL. A tabela **User** armazena informações do usuário cadastrado, como email e senha para o login.
 
 A tabela **books** armazena os dados do livro cadastrado, como nome autor e o usuário que é o dono do livro.
@@ -32,8 +30,6 @@ mudando o status da coluna `request_status`. Quando um usuário recebe um livro 
 ![Alt text](/banco.PNG?raw=true 'Diagrama de banco de dados')
 
 ## ⚙ Instalação
-
----
 
 ### ✅ Clonando o repositório
 
@@ -72,8 +68,6 @@ Quando a API tiver sido inicializada, será exibido no terminal o endereço no q
 Alguns endpoints possuem o acesso livre, enquanto outros necessitam de um token para a validação do usuário que está acessando. Para obter o token de acesso é necessário realizar um cadastro de usuário por meio da rota **/signup**, e na sequência realizar o login desse usuário por meio da rota **/signin**, que irá retornar o bearer token para acesso.
 
 ## 🛠 Tecnologias
-
----
 
 Para o desenvolvimento desse projeto foram utilizadas as seguintes tecnologias:
 
