@@ -1,75 +1,95 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+<h1 align="center">
+    <a href="https://github.com/BrDSF/backend-challenge">🚀 Share Book 🚀</a>
+</h1>
 
-[travis-image]: https://api.travis-ci.org/nestjs/nest.svg?branch=master
-[travis-url]: https://travis-ci.org/nestjs/nest
-[linux-image]: https://img.shields.io/travis/nestjs/nest/master.svg?label=linux
-[linux-url]: https://travis-ci.org/nestjs/nest
-  
-  <p align="center">A progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications, heavily inspired by <a href="https://angular.io" target="blank">Angular</a>.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/dm/@nestjs/core.svg" alt="NPM Downloads" /></a>
-<a href="https://travis-ci.org/nestjs/nest"><img src="https://api.travis-ci.org/nestjs/nest.svg?branch=master" alt="Travis" /></a>
-<a href="https://travis-ci.org/nestjs/nest"><img src="https://img.shields.io/travis/nestjs/nest/master.svg?label=linux" alt="Linux" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#5" alt="Coverage" /></a>
-<a href="https://gitter.im/nestjs/nestjs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge"><img src="https://badges.gitter.im/nestjs/nestjs.svg" alt="Gitter" /></a>
-<a href="https://opencollective.com/nest#backer"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec"><img src="https://img.shields.io/badge/Donate-PayPal-dc3d53.svg"/></a>
-  <a href="https://twitter.com/nestframework"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Descrição
 
-## Description
+O desafio consiste no desenvolvimento de uma aplicação utilizando Node.js, que deverá resolver o seguinte problema:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+> "Pensando em construir o futuro, como você solucionaria os problemas de acesso à educação hoje, utilizando a tecnologia?"
 
-## Installation
+Para o desenvolvimento do desafio foram utilizadas as tecnologias Node.js, NestJS, Express, typescript, Typeorm, Docker, Swagger. O banco de dados utilizado foi o PostgreSQL.
 
-```bash
-$ npm install
-```
+## 📘 Sobre o projeto
 
-## Running the app
+O projeto consiste em uma API que torna possível o compartilhamento de livros entre usuários. Dessa forma diferentes usuários poderão ter acesso aos mais diversos livros, por meio de contato com diferentes donos, ampliando acesso a diferentes materiais e podendo criar laços entre pessoas que desejam estudar um determinado assunto em comum.
 
-```bash
-# development
-$ npm run start
+A idéia é que qualquer pessoa possa pesquisar por livros, dessa forma endpoints para listagem de livros não possuem nenhum tipo de autenticação. Para operações como solicitação de empréstimo a outra pessoa, ou realizar a listagem de alguma pessoa cadastrada, é necessário que o usuário esteja cadastrado no banco de dados. Dessa forma, ao realizar o login ele receberá um Bearer token que deverá ser utilizado para realizar as requisições.
 
-# watch mode
-$ npm run start:dev
+Os endpoints de listagem possuem paginação, com valor padrão de **skip** igual a **0** e de **take** igual a **100**. Os valores podem ser passados nas requisições de listagem, caso se deseje valores diferentes de paginação. Também é possível buscar por um termo específico, como nome ou gênero de livro, por exemplo.
 
-# production mode
-$ npm run start:prod
-```
+## 🎲 Banco de dados
 
-## Test
+---
+
+Para o desenvolvimento do projeto foram criadas 3 tabelas em um banco PostgreSQL. A tabela **User** armazena informações do usuário cadastrado, como email e senha para o login.
+
+A tabela **books** armazena os dados do livro cadastrado, como nome autor e o usuário que é o dono do livro.
+
+Na tabela **loans** são registradas todas as transações de empréstimo. O usuário que solicita o empréstimo é armazenado na coluna `borrowed_user_id`, enquanto o dono do livro é armazenado na coluna owner_id. Quando um registro é criado, por padrão o `request_status` é preenchido como Pendente e o status como None. O dono do livro pode aceitar ou rejeitar a proposta de empréstimo,
+mudando o status da coluna `request_status`. Quando um usuário recebe um livro por empréstimo, a coluna status assume o valor **Borrowed**, e quando ele devolve ela assume o valor **Delivered**.
+
+![Alt text](/banco.PNG?raw=true 'Diagrama de banco de dados')
+
+## ⚙ Instalação
+
+---
+
+### ✅ Clonando o repositório
+
+O primeiro passo é clonar o repositório com o projeto. Para isso, abra o terminal e utilize o seguinte comando:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+$ git clone https://github.com/Lucas-Braganca/share-book.git
 ```
 
-## Support
+Para executar o projeto, é necessário que se tenha o [Docker](https://www.docker.com/) instalado na sua máquina. Tanto o banco de dados quanto a aplicação funcionam por meio do docker. Para a execução é necessário que as portas 3000 e 5432 estejam liberadas para a aplicação, uma vez que o banco de dados utilizará a porta 5432 e a API irá utilizar a porta 3000.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+As portas podem ser alteradas por meio das variáveis de ambiente, para isso basta modificar o arquivo .env da aplicação, modificando as variáveis PORT e TYPEORM_PORT, para a API e banco de dados respectivamente.
 
-## Stay in touch
+### ✅ Executando o projeto
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Primeiro, renomeie o arquivo **.env.example** para **.env**, de maneira que ele se torne o arquivo com a configuração das variáveis de ambiente.
 
-## License
+Em sequência, na raiz do projeto, execute o seguinte comando:
 
-  Nest is [MIT licensed](LICENSE).
+```bash
+$ docker compose up
+```
+
+Dessa maneira, os containers com o banco de dados e com a API serão criados, tornando possível a utilização.
+
+Quando a API tiver sido inicializada, será exibido no terminal o endereço no qual a mesma está escutando, bem como o endereço para acesso do Swagger, onde será possível executar todos os endpoints disponíveis. Se as portas não tiverem sido alteradas, os logs com os endereços correspondentes serão:
+
+```
+[Main] REST application running on: http://127.0.0.1:3000
+
+[Main] Swagger running on: http://127.0.0.1:3000/api
+```
+
+### ✅ Acesso aos endpoints
+
+Alguns endpoints possuem o acesso livre, enquanto outros necessitam de um token para a validação do usuário que está acessando. Para obter o token de acesso é necessário realizar um cadastro de usuário por meio da rota **/signup**, e na sequência realizar o login desse usuário por meio da rota **/signin**, que irá retornar o bearer token para acesso.
+
+## 🛠 Tecnologias
+
+---
+
+Para o desenvolvimento desse projeto foram utilizadas as seguintes tecnologias:
+
+- [Node.js](https://nodejs.org)
+- [Nest.js](https://nodejs.org)
+- [PostresSQL](https://www.postgresql.or)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Swagger](https://swagger.io)
+- [TypeORM](https://typeorm.io/)
+- [Docker](https://www.docker.com/)
+
+## Autor
+
+---
+
+Lucas Bragança
+
+[![Linkedin Badge](https://img.shields.io/badge/-Lucas_Bragança-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/lucas-bragança-aa6050173)](www.linkedin.com/in/lucas-bragança-aa6050173)
+[![Gmail Badge](https://img.shields.io/badge/-lucas.eco11@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:lucas.eco11@gmail.com)](mailto:lucas.eco11@gmail.com)
