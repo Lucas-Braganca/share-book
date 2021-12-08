@@ -1,5 +1,5 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { User } from '../users/users.entity';
 import { AuthService } from './auth.service';
 import { SigninRequestDto } from './dto/request/signin-request.dto';
@@ -11,7 +11,7 @@ import { JwtResponse } from './dto/response/jwt-response.interface';
 export class AuthController {
   constructor(private readonly service: AuthService) {}
 
-  @ApiOkResponse({
+  @ApiCreatedResponse({
     description: 'Cadastro do usuário foi realizado com sucesso',
     type: User,
   })

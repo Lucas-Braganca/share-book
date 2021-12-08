@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { GetUserId } from '../auth/authguard/decorators/get-user-id.decorator';
 import { Book } from './books.entity';
 import { BooksService } from './books.service';
@@ -27,7 +27,7 @@ export class BooksController {
   @Post()
   @UseGuards(AuthGuard())
   @ApiBearerAuth()
-  @ApiOkResponse({
+  @ApiCreatedResponse({
     description: 'O Livro foi adicionado com sucesso',
     type: Book,
   })

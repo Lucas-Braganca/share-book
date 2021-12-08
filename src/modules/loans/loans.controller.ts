@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { GetUserId } from '../auth/authguard/decorators/get-user-id.decorator';
 import { GetLoansRequestDto } from './dto/request/get-loans-request.dto';
 import { UpdateRequestStatusRequestDto } from './dto/request/update-request-status-request.dto';
@@ -25,7 +25,7 @@ export class LoansController {
   constructor(private readonly service: LoansService) {}
 
   @Post('/book/:id')
-  @ApiOkResponse({
+  @ApiCreatedResponse({
     description: 'Empréstimo do livro com id {id} solicitado com sucesso',
     type: Loan,
   })

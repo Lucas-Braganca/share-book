@@ -53,7 +53,7 @@ Em sequência, na raiz do projeto, execute o seguinte comando:
 $ docker compose up
 ```
 
-Dessa maneira, os containers com o banco de dados e com a API serão criados, tornando possível a utilização.
+Dessa maneira, os containers com o banco de dados e com a API serão criados, tornando possível a utilização. O processo de criação pode levar algum tempo para ser finalizado, uma vez que realiza o download de imagens para a sua construção.
 
 Quando a API tiver sido inicializada, será exibido no terminal o endereço no qual a mesma está escutando, bem como o endereço para acesso do Swagger, onde será possível executar todos os endpoints disponíveis. Se as portas não tiverem sido alteradas, os logs com os endereços correspondentes serão:
 
